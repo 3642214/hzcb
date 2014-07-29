@@ -11,10 +11,11 @@ class searchPerson:
     def __init__(self):
         self.getHTML()
                    
-    def getHTML(self,page=1):
+    def getHTML(self,page=1,month=201406):
         search_url = 'http://apply.hzcb.gov.cn/apply/app/status/norm/person'
         params = {
-                'pageNo': page
+                'pageNo': page,
+				'issueNumber':month
         }
         params = urllib.urlencode(params)
         resp = urllib2.urlopen(search_url, params)
@@ -58,24 +59,38 @@ class searchPerson:
             return nameDict
         else:
             return None
+    
+    def searchByFirstName(self,firstName=''):
+        l = [];
+        for name in self.names:
+            if name.startswith(firstName):
+                l.append(name)
+        return l
 
 if __name__ == '__main__':             
     s = searchPerson()
-    i=2
+#    i=2
     l = s.getAllNames()
     print u"total name ",s.getTotalCount()
-    d = sorted(s.countName().items(),key=lambda d:d[1],reverse = True)
-    num = 0
-    for (k,v) in d:
-        print k," : ",v
-        num += v
-    print num
+#    d = sorted(s.countName().items(),key=lambda d:d[1],reverse = True)
+#    num = 0
+#    for (k,v) in d:
+#        print k," : ",v
+#        num += v
+#    print num
     #print s.countName()
     #while(i < len(l) + 1):
     #    print i / 2,l[i-2],l[i-1]
     #    i += 2
-    #n = s.searchName("王敏")
-    #if n >= 0 :
-    #    print "恭喜"
-    #    print l[n-1],l[n]
+    print "get data over"
+    while 1:
+        name = raw_input("input name:")
+        for n in s.searchByFirstName(name):
+            print n
+#        n = s.searchName(name)
+#        if n >= 0 :
+#            print "恭喜"
+#            print l[n-1],l[n]
+#        else:
+#            print "not found"
 
