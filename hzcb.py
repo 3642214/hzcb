@@ -7,15 +7,17 @@ class searchPerson:
     html = ""
     count = []
     names = []
+    month = 0
 
-    def __init__(self):
-        self.getHTML()
+    def __init__(self,month):
+        self.month = month
+        self.getHTML(1)
                    
-    def getHTML(self,page=1,month=201406):
+    def getHTML(self,page):
         search_url = 'http://apply.hzcb.gov.cn/apply/app/status/norm/person'
         params = {
                 'pageNo': page,
-				'issueNumber':month
+				'issueNumber':self.month
         }
         params = urllib.urlencode(params)
         resp = urllib2.urlopen(search_url, params)
@@ -68,8 +70,8 @@ class searchPerson:
         return l
 
 if __name__ == '__main__':             
-    s = searchPerson()
-#    i=2
+    month = raw_input("input search month(like:201408)")
+    s = searchPerson(month)
     l = s.getAllNames()
     print u"total name ",s.getTotalCount()
 #    d = sorted(s.countName().items(),key=lambda d:d[1],reverse = True)
